@@ -1,0 +1,12 @@
+# SQLite database (generated at runtime)
+/data/*.db
+/data/*.db-shm
+/data/*.db-wal
+
+# OS / editor artefacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

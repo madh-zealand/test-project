@@ -1,0 +1,35 @@
+# .htaccess – Apache configuration for the test-project webapp
+
+# ── Security headers ─────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Deny direct access to sensitive directories ───────────────────────────────
+<DirectoryMatch "^(.*/)(data|includes)/">
+    Require all denied
+</DirectoryMatch>
+
+# ── URL rewriting – route all requests through index.php ─────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Serve existing files and directories directly (e.g. assets/)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Everything else → index.php
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# ── Hide .htaccess itself ─────────────────────────────────────────────────────
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+# ── Disable directory listing ─────────────────────────────────────────────────
+Options -Indexes
